@@ -42,7 +42,8 @@ def process_jobs(
 
         try:
             db.set_job_status(conn, job.id, "in_progress")
-            result = ocr.perform_ocr(Path(job.original_fullpath))
+            input_path = Path(job.original_fullpath)
+            result = ocr.run_ocr(job.id, input_path)
 
             ocr_dir = Path(project.root_path) / "ocr"
             ocr_dir.mkdir(parents=True, exist_ok=True)
@@ -60,4 +61,3 @@ def process_jobs(
             summary["processed"] += 1
 
     return summary
-
